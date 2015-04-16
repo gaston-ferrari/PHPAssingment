@@ -1,38 +1,40 @@
 <?php
 
 $path = $_SERVER['PATH_INFO'];
-
-if ($path = '/address')
-{
-  $controller = new \Controller();
-  $return = $controller->ex();
-  echo $return;
+if ($path == '/address') {
+    $controller = new \Controller();
+    $return = $controller->ex();
+    echo $return;
 }
 
-class Controller
-{
-  $addresses = [];
+class Controller {
 
-  function ex()
-  {
-    $this->rcd();
-    $id = $_GET['id']
-    $address = $this->addresses[$id];
-    return json_encode($address);
-  }
+    private $addresses = [];
 
-  function rcd()
-  {
-    $file = fopen('example.csv', 'r');
-    while (($line = fgetcsv($file)) !== FALSE) {
-        $this->addresses[] = [
-            name = $line[0],
-            phone = $line[1],
-            street = $line[2]
-        ]
+    function ex() {
+        $this->rcd();
+        $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+        if (!$id) {
+            return null;
+        } else {
+            $address = $this->addresses[$id];
+            return json_encode($address);
+        }
     }
 
-    fclose($file);
-  }
+    function rcd() {
+        $file = fopen('example.csv', 'r');
+        while (($line = fgetcsv($file)) !== FALSE) {
+            $this->addresses[] = [
+                'name' => $line[0],
+                'phone' => $line[1],
+                'street' => $line[2]
+            ];
+        }
+
+        fclose($file);
+    }
+
 }
+
 ?>
