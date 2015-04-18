@@ -14,7 +14,7 @@ class Controller {
     function ex() {
         $this->rcd();
         $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-        if (!$id | !isset($this->addresses[$id])) {
+        if ($id === FALSE | !isset($this->addresses[$id])) {
             return null;
         } else {
             $address = $this->addresses[$id];
