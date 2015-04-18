@@ -14,7 +14,7 @@ class Controller {
     function ex() {
         $this->rcd();
         $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-        if (!$id) {
+        if (!$id | !isset($this->addresses[$id])) {
             return null;
         } else {
             $address = $this->addresses[$id];
@@ -24,15 +24,17 @@ class Controller {
 
     function rcd() {
         $file = fopen('example.csv', 'r');
-        while (($line = fgetcsv($file)) !== FALSE) {
-            $this->addresses[] = [
-                'name' => $line[0],
-                'phone' => $line[1],
-                'street' => $line[2]
-            ];
-        }
+        if ($file !== FALSE) {
+            while (($line = fgetcsv($file)) !== FALSE) {
+                $this->addresses[] = [
+                    'name' => $line[0],
+                    'phone' => $line[1],
+                    'street' => $line[2]
+                ];
+            }
 
-        fclose($file);
+            fclose($file);
+        }
     }
 
 }
