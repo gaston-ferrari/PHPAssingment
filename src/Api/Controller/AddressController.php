@@ -17,6 +17,6 @@ class AddressController {
             return null;
         }
         $address = $this->addressModel->getAddress($id);
-        return json_encode($address);
+        echo json_encode($address);
     }
 }
