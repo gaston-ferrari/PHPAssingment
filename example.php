@@ -27,9 +27,10 @@ class Controller {
         if ($file !== FALSE) {
             while (($line = fgetcsv($file)) !== FALSE) {
                 $this->addresses[] = [
-                    'name' => $line[0],
-                    'phone' => $line[1],
-                    'street' => $line[2]
+                    'id' =>$line[0],
+                    'name' => $line[1],
+                    'phone' => $line[2],
+                    'street' => $line[3]
                 ];
             }
 
