@@ -1,10 +1,7 @@
 <?php
 
-require_once(__DIR__  . '/ClassLoader.php');
+require_once(__DIR__  . '/bootstrap.php');
 require_once(__DIR__  . '/Routes.php');
-
-$classLoader = new \ClassLoader('Api', __DIR__ . '/src');
-$classLoader->registerLoader();
 
 $routes = new Routes();
 

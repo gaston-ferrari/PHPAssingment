@@ -65,7 +65,7 @@ class AddressModel {
     public function insertAddress($address) {
         $addresses = $this->readFile();
         $nextId = count($addresses);
-        array_unshift($address, $nextId + 1);
+        array_unshift($address, $nextId);
         $file = fopen(__DIR__ . $this->dataFile, 'a');
         $length = fputcsv($file, $address);
         fclose($file);
@@ -97,6 +97,11 @@ class AddressModel {
         } else {
             return false;
         }
+    }
+    
+    public function getAllAddresses(){
+        $addresses = $this->readFile();
+        return $addresses;
     }
 
 }
