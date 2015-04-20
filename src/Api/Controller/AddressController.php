@@ -6,17 +6,75 @@ class AddressController {
 
     private $addresses = [];
     private $addressModel;
-    
+
     public function __construct() {
         $this->addressModel = new \Api\Model\AddressModel();
     }
 
-    function ex() {
+    function showAddress() {
         $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-        if ($id===FALSE){
-            return null;
+        if ($id === FALSE) {
+            throw new \Exception("Invalid input.");
         }
         $address = $this->addressModel->getAddress($id);
-        echo json_encode($address);
+        if($address!==FALSE){
+            echo json_encode($address);
+        }else{
+            throw new \Exception("Address not found");
+        }
     }
+
+    function addAddress() {
+        $json = filter_input(INPUT_POST, 'address');
+        if ($json === FALSE) {
+            throw new \Exception("Invalid input.");
+        }
+        $address = json_decode($json, true);
+        if (!isset($address["name"]) || !isset($address["phone"]) || !isset($address["street"])) {
+            throw new \Exception("Invalid address.");
+        }
+        $res = $this->addressModel->insertAddress([$address["name"], $address["phone"], $address["street"]]);
+        if ($res) {
+            echo "Address added successfully";
+        } else {
+            throw new \Exception("There was an error inserting the address.");
+        }
+    }
+
+    function deleteAddress() {
+        $putVars = [];
+        parse_str(file_get_contents("php://input"),$putVars);
+        $id = filter_var($putVars['id'], FILTER_VALIDATE_INT);
+        if ($id === FALSE) {
+            throw new \Exception("Invalid input.");
+        }
+        if ($this->addressModel->deleteAddress($id)) {
+            echo "Address deleted successfully.";
+        } else {
+            throw new \Exception("No address to delete.");
+        }
+    }
+
+    function updateAddress() {
+        $putVars = [];
+        parse_str(file_get_contents("php://input"),$putVars);
+        $json = isset($putVars['address'])? $putVars['address'] : FALSE;
+        $id = filter_var($putVars['id'], FILTER_VALIDATE_INT);
+        
+        if ($json === FALSE || $id === FALSE) {
+            throw new \Exception("Invalid input.");
+        }
+        $address = json_decode($json, true);
+        
+        if (!isset($address["name"]) || !isset($address["phone"]) || !isset($address["street"])) {
+            throw new \Exception("Invalid address.");
+        }
+        $res = $this->addressModel->updateAddress($id,[$id, $address["name"], $address["phone"], $address["street"]]);
+        if ($res) {
+            echo "Address updated successfully";
+        } else {
+            throw new \Exception("There was an error updating the address.");
+        }
+    }
+
 }
