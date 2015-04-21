@@ -9,8 +9,8 @@ class Request {
     private $_path;
 
     public function __construct() {
-        $this->_path = $_SERVER['PATH_INFO'];
-        $this->_requestType = $_SERVER['REQUEST_METHOD'];
+        $this->_path = isset($_SERVER['PATH_INFO'])?$_SERVER['PATH_INFO']:"";
+        $this->_requestType = isset($_SERVER['REQUEST_METHOD'])?$_SERVER['REQUEST_METHOD']:"";
         switch ($this->_requestType) {
             case "GET":
                 $this->_requestData = $_GET;
@@ -34,5 +34,9 @@ class Request {
     
     public function getPath(){
         return $this->_path;
+    }
+    
+    public function setData($data){
+        $this->_requestData = $data;
     }
 }
