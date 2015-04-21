@@ -4,12 +4,7 @@ namespace Api\Model;
 
 class AddressModel {
 
-    private $addresses = [];
     private $dataFile = '/../../../example.csv';
-
-    public function __construct() {
-        $this->addresses[] = $this->readFile();
-    }
 
     private function readFile() {
         $content = [];

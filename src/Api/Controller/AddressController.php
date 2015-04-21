@@ -4,15 +4,15 @@ namespace Api\Controller;
 
 class AddressController {
 
-    private $addresses = [];
     private $addressModel;
 
     public function __construct() {
         $this->addressModel = new \Api\Model\AddressModel();
     }
 
-    function showAddress() {
-        $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+    function showAddress($request) {
+        $reqData = $request->getData();
+        $id = filter_var($reqData['id'], FILTER_VALIDATE_INT);
         if ($id === FALSE) {
             throw new \Exception("Invalid input.");
         }
@@ -24,8 +24,9 @@ class AddressController {
         }
     }
 
-    function addAddress() {
-        $json = filter_input(INPUT_POST, 'address');
+    function addAddress($request) {
+        $reqData = $request->getData();
+        $json = isset($reqData['address'])? $reqData['address'] : FALSE;
         if ($json === FALSE) {
             throw new \Exception("Invalid input.");
         }
@@ -41,10 +42,9 @@ class AddressController {
         }
     }
 
-    function deleteAddress() {
-        $putVars = [];
-        parse_str(file_get_contents("php://input"),$putVars);
-        $id = filter_var($putVars['id'], FILTER_VALIDATE_INT);
+    function deleteAddress($request) {
+        $reqData = $request->getData();
+        $id = filter_var($reqData['id'], FILTER_VALIDATE_INT);
         if ($id === FALSE) {
             throw new \Exception("Invalid input.");
         }
@@ -55,11 +55,10 @@ class AddressController {
         }
     }
 
-    function updateAddress() {
-        $putVars = [];
-        parse_str(file_get_contents("php://input"),$putVars);
-        $json = isset($putVars['address'])? $putVars['address'] : FALSE;
-        $id = filter_var($putVars['id'], FILTER_VALIDATE_INT);
+    function updateAddress($request) {
+        $reqData = $request->getData();
+        $id = filter_var($reqData['id'], FILTER_VALIDATE_INT);
+        $json = isset($reqData['address'])? $reqData['address'] : FALSE;
         
         if ($json === FALSE || $id === FALSE) {
             throw new \Exception("Invalid input.");
