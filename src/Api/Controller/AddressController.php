@@ -18,7 +18,7 @@ class AddressController {
         }
         $address = $this->addressModel->getAddress($id);
         if($address!==FALSE){
-            echo json_encode($address);
+            return $address;
         }else{
             throw new \Exception("Address not found");
         }
@@ -36,7 +36,7 @@ class AddressController {
         }
         $res = $this->addressModel->insertAddress([$address["name"], $address["phone"], $address["street"]]);
         if ($res) {
-            echo "Address added successfully";
+            return "Address added successfully";
         } else {
             throw new \Exception("There was an error inserting the address.");
         }
@@ -49,7 +49,7 @@ class AddressController {
             throw new \Exception("Invalid input.");
         }
         if ($this->addressModel->deleteAddress($id)) {
-            echo "Address deleted successfully.";
+            return "Address deleted successfully.";
         } else {
             throw new \Exception("No address to delete.");
         }
@@ -70,7 +70,7 @@ class AddressController {
         }
         $res = $this->addressModel->updateAddress($id,[$id, $address["name"], $address["phone"], $address["street"]]);
         if ($res) {
-            echo "Address updated successfully";
+            return "Address updated successfully";
         } else {
             throw new \Exception("There was an error updating the address.");
         }

@@ -15,7 +15,8 @@ $routes->put("/address", array($addressController, 'updateAddress'));
 
 try{
     $handler = $routes->getHandler($req->getPath(), $req->getType());
-    call_user_func($handler, $req);
+    $res = call_user_func($handler, $req);
+    echo json_encode($res);
 } catch (Exception $ex) {
     http_response_code(500);
     echo $ex->getMessage();
